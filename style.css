@@ -1,0 +1,556 @@
+/* ==========================
+    RESET
+========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --cream:#FFF7EA;
+    --card:#FFFAF2;
+    --navy:#253C78;
+    --rose:#D36582;
+    --teal:#119DA4;
+    --gold:#FFC857;
+    --purple:#8E72C7;
+    --success:#66BB6A;
+    --shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+}
+
+/* ==========================
+    BODY
+========================== */
+
+body{
+    font-family:
+    "Segoe UI",
+    sans-serif;
+    background:
+    var(--cream);
+    color:
+    var(--navy);
+    height:100vh;
+    overflow:hidden;
+}
+
+/* ==========================
+    APP LAYOUT
+========================== */
+
+.app{
+    display:flex;
+    height:100vh;
+}
+
+/* ==========================
+    SIDEBAR
+========================== */
+
+.sidebar{
+    width:350px;
+    background:
+    rgba(255,255,255,.8);
+    backdrop-filter:
+    blur(16px);
+    border-right:
+    1px solid rgba(0,0,0,.05);
+    padding:20px;
+    overflow-y:auto;
+}
+
+.sidebar-header{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.sidebar-header h1{
+    text-align:center;
+    color:
+    var(--rose);
+    font-size:28px;
+}
+
+.project-title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.project-actions{
+    display:flex;
+    gap:6px;
+}
+
+.rename-project-btn,
+.delete-project-btn{
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* ==========================
+    BUTTONS
+========================== */
+
+button{
+    cursor:pointer;
+    border:none;
+    transition:.15s;
+}
+
+button:hover{
+    transform:
+    translateY(-1px);
+}
+
+button:active{
+    transform:
+    scale(.98);
+}
+
+/* ==========================
+    ADD PROJECT
+========================== */
+
+#addProjectBtn{
+    background:
+    linear-gradient(
+        135deg,
+        var(--teal),
+        #2ac8d1
+    );
+    color:white;
+    padding:14px;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:
+    var(--shadow);
+}
+
+/* ==========================
+    PROJECT CARD
+========================== */
+
+.project-card{
+    background:
+    white;
+    border-radius:20px;
+    padding:16px;
+    margin-bottom:16px;
+    box-shadow:
+    var(--shadow);
+}
+
+.project-card.active{
+    border:
+    3px solid var(--rose);
+}
+
+.project-title{
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* ==========================
+    PROJECT PROGRESS
+========================== */
+
+.project-progress{
+    margin-top:12px;
+}
+
+.progress-track{
+    width:100%;
+    height:10px;
+    border-radius:999px;
+    background:#e8e8e8;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    background:
+    linear-gradient(
+        90deg,
+        var(--rose),
+        var(--gold)
+    );
+    border-radius:999px;
+    width:0%;
+}
+
+.project-percent{
+    margin-top:6px;
+    font-size:12px;
+    opacity:.75;
+}
+
+/* ==========================
+    SECTION LIST
+========================== */
+
+.sections{
+    margin-top:15px;
+    padding-left:10px;
+}
+
+.section-item{
+    padding:10px;
+    border-radius:12px;
+    margin-bottom:6px;
+    cursor:pointer;
+}
+
+.section-item:hover{
+    background:
+    rgba(0,0,0,.04);
+}
+
+.section-item.active{
+    background:
+    rgba(211,101,130,.15);
+}
+
+.section-complete{
+    color:
+    var(--success);
+}
+
+.section-current{
+    color:
+    var(--rose);
+    font-weight:700;
+}
+
+.add-section-btn{
+    width:100%;
+    margin-top:10px;
+    background:
+    rgba(17,157,164,.1);
+    color:
+    var(--teal);
+    padding:10px;
+    border-radius:12px;
+}
+
+/* ==========================
+    MAIN CONTENT
+========================== */
+
+.main-content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    padding:40px;
+}
+
+/* ==========================
+    TITLES
+========================== */
+
+.current-project h2{
+    font-size:42px;
+    font-weight:700;
+}
+
+.current-section h3{
+    font-size:24px;
+    opacity:.8;
+}
+
+/* ==========================
+    PROGRESS RING
+========================== */
+
+.progress-ring-container{
+    position:relative;
+    width:260px;
+    height:260px;
+}
+
+.progress-ring{
+    transform:
+    rotate(-90deg);
+}
+
+.ring-background{
+    fill:none;
+    stroke:#e5e5e5;
+    stroke-width:18;
+}
+
+.ring-progress{
+    fill:none;
+    stroke:var(--rose);
+    stroke-width:18;
+    stroke-linecap:round;
+    stroke-dasharray:691;
+    stroke-dashoffset:691;
+    transition:.4s ease;
+}
+
+/* ==========================
+    COUNTER DISPLAY
+========================== */
+
+.counter-display{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    font-size:48px;
+    font-weight:700;
+}
+
+#currentCount{
+    color:
+    var(--rose);
+}
+
+#targetCount{
+    color:
+    var(--navy);
+}
+
+.slash{
+    opacity:.4;
+}
+
+/* ==========================
+    PERCENTAGE
+========================== */
+
+#progressPercent{
+    font-size:22px;
+    font-weight:700;
+    color:
+    var(--teal);
+}
+
+/* ==========================
+    COUNTER BUTTONS
+========================== */
+
+.counter-buttons{
+    display:flex;
+    gap:24px;
+}
+
+.counter-buttons button{
+    width:130px;
+    height:130px;
+    border-radius:28px;
+    color:white;
+    font-size:60px;
+    box-shadow:
+    var(--shadow);
+}
+
+#minusBtn{
+    background:
+    linear-gradient(
+        135deg,
+        var(--purple),
+        #a487df
+    );
+}
+
+#plusBtn{
+    background:
+    linear-gradient(
+        135deg,
+        var(--teal),
+        #2ac8d1
+    );
+}
+
+/* ==========================
+    SECTION ACTIONS
+========================== */
+
+.section-actions{
+    display:flex;
+    gap:14px;
+}
+
+.section-actions button{
+    padding:14px 24px;
+    border-radius:14px;
+    font-weight:600;
+    box-shadow:
+    var(--shadow);
+}
+
+#nextSectionBtn{
+    background:
+    var(--gold);
+}
+
+#addSectionBtn{
+    background:
+    var(--teal);
+    color:white;
+}
+
+/* ==========================
+    INSTRUCTIONS
+========================== */
+
+.instructions-card{
+    width:100%;
+    max-width:700px;
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:
+    var(--shadow);
+}
+
+.instructions-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+#addInstructionBtn{
+    background:
+    var(--teal);
+    color:white;
+    padding:10px 14px;
+    border-radius:10px;
+}
+
+#instructionList{
+    padding-left:20px;
+}
+
+#instructionList li{
+    margin-bottom:10px;
+}
+
+/* ==========================
+    SHORTCUTS
+========================== */
+
+.keyboard-shortcuts{
+    opacity:.65;
+    text-align:center;
+}
+
+/* ==========================
+    MODALS
+========================== */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:
+    rgba(0,0,0,.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.hidden{
+    display:none;
+}
+
+.modal-content{
+    width:380px;
+    background:white;
+    border-radius:24px;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+
+    gap:12px;
+    box-shadow:
+    var(--shadow);
+}
+
+.modal-content h2{
+    text-align:center;
+}
+
+.modal-content input,
+.modal-content textarea{
+    border:
+    1px solid #ddd;
+    border-radius:12px;
+    padding:12px;
+    font-size:16px;
+    resize:none;
+}
+
+.modal-content button{
+    background:
+    var(--teal);
+    color:white;
+    padding:12px;
+    border-radius:12px;
+}
+
+.modal-content label{
+    font-weight:600;
+    margin-top:8px;
+    margin-bottom:-4px;
+    color:var(--navy);
+}
+
+/* ==========================
+    CONFETTI
+========================== */
+
+#confetti-container{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:9999;
+}
+
+/* ==========================
+    MOBILE
+========================== */
+
+@media(max-width:900px){
+
+    .app{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        height:300px;
+    }
+
+    .main-content{
+        padding:20px;
+    }
+
+    .counter-buttons button{
+        width:100px;
+        height:100px;
+        font-size:50px;
+    }
+
+    .current-project h2{
+        font-size:30px;
+    }
+}
