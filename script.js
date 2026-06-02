@@ -11,6 +11,8 @@ let projects = [];
 
 let currentProjectId = null;
 let currentSectionId = null;
+let renamingSectionId = null;
+let renamingProjectId = null;
 
 /* ======================================================
     STORAGE
@@ -210,13 +212,22 @@ if (
                 }
 
                 sectionsHTML += `
-                    <div
-                        class="section-item"
-                        onclick="selectSection('${project.id}','${section.id}')"
-                    >
-                        ${icon}
-                        ${section.name}
-                        [${section.current}/${section.target}]
+                    <div class="section-row">
+                        
+                        <div 
+                            class="section-item" 
+                            onclick="selectSection('${project.id}','${section.id}')"
+                        >
+                            ${icon}
+                            ${section.name}
+                            [${section.current}/${section.target}]
+                        </div>
+                    
+                        <button class="rename-section-btn"
+                            onclick="event.stopPropagation();
+                            renameSection('${section.id}');">
+                            ✏
+                        </button>
                     </div>
                 `;
             });
@@ -378,64 +389,70 @@ function deleteProject(
 function renameProject(
     projectId
 ){
+    const project = projects.find(
+        p => p.id === projectId
+    );
 
-    const project =
-        projects.find(
-            p =>
-            p.id === projectId
-        );
-
-    const newName =
-        prompt(
-            "Project Name",
-            project.name
-        );
-
-    if(!newName){
-
+    if (
+        !project
+    ){
         return;
     }
 
-    project.name =
-        newName;
+    renamingProjectId = projectId;
 
-    renderProjects();
+    document.getElementById("renameProjectInput")
+    .value = project.name;
 
-    saveApp();
+    showModal(
+        "renameProjectModal"
+    );
+
+    setTimeout(
+        () => {
+            document.getElementById(
+                "renameProjectInput"
+            )
+            .focus();
+        },
+        50
+    );
 }
 
 function renameSection(
     sectionId
 ){
+    let section = null;
 
-    const project =
-        getCurrentProject();
-
-    const section =
-        project.sections.find(
-            s =>
-            s.id === sectionId
+    for ( 
+        const project of projects 
+    ){
+        const found = project.sections.find(
+            s => s.id === sectionId
         );
 
-    const newName =
-        prompt(
-            "Section Name",
-            section.name
-        );
+        if (found){
 
-    if(!newName){
+            section = found;
 
+            break;
+        }
+    }
+
+    if (
+        !section
+    ){
         return;
     }
 
-    section.name =
-        newName;
+    renamingSectionId = sectionId;
 
-    renderProjects();
+    document.getElementById("renameSectionInput")
+    .value = section.name;
 
-    loadSelectedSection();
-
-    saveApp();
+    showModal(
+        "renameSectionModal"
+    );
 }
 
 function selectSection(
@@ -453,6 +470,96 @@ function selectSection(
 
     loadSelectedSection();
 }
+
+document.getElementById(
+    "saveRenameSectionBtn"
+)
+.addEventListener(
+    "click",
+    () => {
+        const newName = document.getElementById(
+            "renameSectionInput"
+        )
+        .value
+        .trim();
+
+        if (
+            !newName
+        ){
+            return;
+        }
+
+        for(
+            const project of projects
+        ){
+            const section = project.sections.find(
+                s => s.id === renamingSectionId
+            );
+
+            if ( 
+                section
+            ){
+                section.name = newName;
+
+                break;
+            }
+        }
+
+        renderProjects();
+
+        loadSelectedSection();
+        
+        saveApp();
+
+        hideModal(
+            "renameSectionModal"
+        );
+    }
+);
+
+
+document.getElementById(
+    "saveRenameProjectBtn"
+)
+.addEventListener(
+    "click",
+    () => {
+        const newName = document.getElementById(
+                "renameProjectInput"
+            )
+            .value
+            .trim();
+        
+        if (
+            !newName
+        ){
+            return;
+        }
+
+        const project = projects.find(
+            p => p.id === renamingProjectId
+        );
+
+        if (
+            !project
+        ){
+            return;
+        }
+
+        project.name = newName;
+
+        renderProjects();
+
+        loadSelectedSection();
+
+        saveApp();
+
+        hideModal(
+            "renameProjectModal"
+        );
+
+    }
+);
 
 /* ======================================================
     MAIN SCREEN
@@ -504,42 +611,25 @@ function loadSelectedSection() {
    ====================================================== */
 
 function renderInstructions() {
-
-    const section =
-        getCurrentSection();
-
-    const list =
-        document.getElementById(
-            "instructionList"
-        );
-
-    list.innerHTML = "";
+    const section = getCurrentSection();
+    const list = document.getElementById("instructionList");
+    if (
+        !section
+    ){
+        return;
+    }
 
     if (
-        section.instructions.length === 0
-    ) {
-
-        list.innerHTML =
-            "<li>No instructions yet.</li>";
+        !section.instructions
+    ){
+        list.innerHTML = "No instructions yet.";
 
         return;
     }
 
-    section.instructions.forEach(
-        instruction => {
-
-        const li =
-            document.createElement(
-                "li"
-            );
-
-        li.textContent =
-            instruction;
-
-        list.appendChild(
-            li
-        );
-    });
+    list.innerHTML = ` 
+    <pre class="instruction-text">${section.instructions}</pre>
+    `;
 }
 
 /* ======================================================
@@ -1064,7 +1154,7 @@ if(
                         false,
 
                     instructions:
-                        []
+                        ""
                 }
 
             ]
@@ -1112,6 +1202,12 @@ function openSectionModal(
         )
         .value = "";
 
+    document
+        .getElementById(
+            "sectionInstructionInput"
+        )
+        .value = "";
+
     showModal(
         "sectionModal"
     );
@@ -1145,6 +1241,15 @@ document
                 .value
 
             );
+
+        const instructionText = 
+            
+            document
+            .getElementById(
+                "sectionInstructionInput"
+            )
+            .value
+            .trim();
 
         if (
             !name ||
@@ -1180,7 +1285,7 @@ document
                 false,
 
             instructions:
-                []
+                instructionText
         });
 
         hideModal(
@@ -1280,7 +1385,7 @@ document
                 false,
 
             instructions:
-                []
+                ""
         });
 
         currentSectionId =
@@ -1308,17 +1413,24 @@ document
 
 document
 .getElementById(
-    "addInstructionBtn"
+    "editInstructionBtn"
 )
 .addEventListener(
     "click",
     () => {
+        const section = getCurrentSection();
+
+        if (
+            !section
+        ){
+            return;
+        }
 
         document
-            .getElementById(
-                "instructionInput"
-            )
-            .value = "";
+        .getElementById(
+            "instructionInput"
+        )
+        .value = section.instructions || "";
 
         showModal(
             "instructionModal"
@@ -1333,35 +1445,56 @@ document
 .addEventListener(
     "click",
     () => {
+        const section = getCurrentSection();
 
-        const text =
-
-            document
-            .getElementById(
-                "instructionInput"
-            )
-            .value
-            .trim();
-
-        if (!text) {
-
+        if (
+            !section
+        ){
             return;
         }
 
-        const section =
-            getCurrentSection();
+        section.instructions = 
+            document.getElementById(
+                "instructionInput"
+            )
+            .value;
 
-        section.instructions.push(
-            text
-        );
+        saveApp();
+
+        renderInstructions();
 
         hideModal(
             "instructionModal"
         );
+    }
+);
 
-        renderInstructions();
+document
+.getElementById(
+    "deleteInstructionBtn"
+)
+.addEventListener(
+    "click",
+    () => {
+        const section = getCurrentSection();
+
+        if (
+            !section
+        ){
+            return;
+        }
+
+        if (
+            !confirm( "Delete all instructions?" )
+        ){
+            return;
+        }
+
+        section.instructions = "";
 
         saveApp();
+
+        renderInstructions();
     }
 );
 

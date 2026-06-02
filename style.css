@@ -232,16 +232,12 @@ button:active{
     font-weight:700;
 }
 
-.add-section-btn{
-    width:100%;
-    margin-top:10px;
-    background:
-    rgba(17,157,164,.1);
-    color:
-    var(--teal);
-    padding:10px;
-    border-radius:12px;
+.section-row{
+    display:flex;
+    align-items:center;
+    gap:6px;
 }
+
 
 /* ==========================
     MAIN CONTENT
@@ -396,6 +392,24 @@ button:active{
     var(--shadow);
 }
 
+.add-section-btn{
+    width:100%;
+    margin-top:10px;
+    background:
+    rgba(17,157,164,.1);
+    color:
+    var(--teal);
+    padding:10px;
+    border-radius:12px;
+}
+
+.rename-section-btn{
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:14px;
+}
+
 #nextSectionBtn{
     background:
     var(--gold);
@@ -444,6 +458,26 @@ button:active{
     margin-bottom:10px;
 }
 
+.instruction-text{
+    white-space:pre-wrap;
+    font-family:
+    inherit;
+    font-size:16px;
+    line-height:1.6;
+    margin:0;
+}
+
+.instruction-actions{
+    display:flex;
+    gap:10px;
+}
+
+.instruction-actions button{
+    border:none;
+    cursor:pointer;
+    padding:10px 14px;
+    border-radius:10px;
+}
 /* ==========================
     SHORTCUTS
 ========================== */

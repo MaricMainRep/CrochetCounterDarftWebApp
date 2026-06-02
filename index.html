@@ -127,16 +127,20 @@
                         Instructions
                     </h3>
 
-                    <button id="addInstructionBtn">
-                        + Add Instruction
-                    </button>
+                    <div class="instruction-actions">
+                        <button id="editInstructionBtn">
+                            ✏ Edit
+                        </button>
+
+                        <button id="deleteInstructionBtn">
+                            🗑 Delete
+                        </button>
+                    </div>
                 </div>
 
-                <ul id="instructionList">
-                    <li>
-                        No instructions yet.
-                    </li>
-                </ul>
+                <div id="instructionList">
+                    No instructions yet.
+                </div>
             </div>
 
             <!-- Keyboard Help -->
@@ -146,8 +150,6 @@
                 ⬅ Remove Stitch
                 •
                 Space Reset
-                •
-                Enter Next Section
             </div>
         </main>
     </div>
@@ -223,6 +225,12 @@
                 type="number"
                 placeholder="Target Count">
 
+            <textarea
+                id="sectionInstructionInput"
+                rows="4"
+                placeholder="Instructions&#10;(2SC, INC) x6&#10;Change to blue yarn">
+            </textarea>
+
             <button id="createSectionBtn">
                 Create Section
             </button>
@@ -257,6 +265,68 @@
         </div>
     </div>
 
+<!-- =====================================
+        RENAME SECTION MODAL
+===================================== -->
+
+<div
+    class="modal hidden"
+    id="renameSectionModal"
+>
+
+    <div class="modal-content">
+
+        <h2>
+            Rename Section
+        </h2>
+
+        <input
+            type="text"
+            id="renameSectionInput"
+            placeholder="Section Name"
+        >
+
+        <button
+            id="saveRenameSectionBtn"
+        >
+            Save Changes
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =====================================
+    RENAME PROJECT MODAL
+===================================== -->
+
+<div
+    class="modal hidden"
+    id="renameProjectModal"
+>
+
+    <div class="modal-content">
+
+        <h2>
+            Rename Project
+        </h2>
+
+        <input
+            type="text"
+            id="renameProjectInput"
+            placeholder="Project Name"
+        >
+
+        <button
+            id="saveRenameProjectBtn"
+        >
+            Save Changes
+        </button>
+
+    </div>
+
+</div>
+
     <!-- ======================
         INSTRUCTION MODAL
     ======================= -->
@@ -266,7 +336,7 @@
         id="instructionModal">
         <div class="modal-content">
             <h2>
-                Add Instruction
+                Edit Instructions
             </h2>
 
             <textarea
@@ -276,7 +346,7 @@
             </textarea>
 
             <button id="saveInstructionBtn">
-                Save Instruction
+                Save Changes
             </button>
         </div>
     </div>
