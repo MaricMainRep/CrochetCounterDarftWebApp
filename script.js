@@ -696,24 +696,52 @@ function addStitch() {
     }
 
     if (
-        section.current >=
-        section.target
-    ) {
+    section.current >=
+    section.target
+) {
 
-        section.current =
-            section.target;
+    section.current =
+        section.target;
 
-        section.completed =
-            true;
+    section.completed =
+        true;
 
-        launchConfetti();
+    launchConfetti();
 
-        setTimeout(() => {
+    setTimeout(
+        () => {
 
-            openNextSectionModal();
+            const project =
+                getCurrentProject();
 
-        }, 500);
-    }
+            const index =
+                project.sections.findIndex(
+                    s =>
+                    s.id ===
+                    section.id
+                );
+
+            const nextSection =
+                project.sections[
+                    index + 1
+                ];
+
+            if (
+                nextSection
+            ){
+
+                currentSectionId =
+                    nextSection.id;
+
+                renderProjects();
+
+                loadSelectedSection();
+            }
+
+        },
+        500
+    );
+}
 
     saveApp();
 
@@ -888,6 +916,87 @@ document
 .addEventListener(
     "click",
     removeStitch
+);
+
+/* ======================================================
+    NAVIGATION BUTTONS
+   ====================================================== */
+
+document
+.getElementById(
+    "addSectionBtn"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        const project =
+            getCurrentProject();
+
+        if (
+            !project
+        ){
+            return;
+        }
+
+        openSectionModal(
+            project.id
+        );
+    }
+);
+
+document
+.getElementById(
+    "nextSectionBtn"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        const project =
+            getCurrentProject();
+
+        const section =
+            getCurrentSection();
+
+        if (
+            !project ||
+            !section
+        ){
+            return;
+        }
+
+        const index =
+            project.sections.findIndex(
+                s =>
+                s.id ===
+                section.id
+            );
+
+        if (
+            index === -1
+        ){
+            return;
+        }
+
+        const nextSection =
+            project.sections[
+                index + 1
+            ];
+
+        if (
+            !nextSection
+        ){
+            return;
+        }
+
+        currentSectionId =
+            nextSection.id;
+
+        renderProjects();
+
+        loadSelectedSection();
+    }
 );
 
 /* ======================================================
