@@ -131,6 +131,51 @@ function calculateProjectProgress(
 }
 
 /* ======================================================
+    COLLAPSIBLE SIDEBAR
+====================================================== */
+
+const sidebar =
+    document.querySelector(
+        ".sidebar"
+    );
+
+const toggleSidebarBtn =
+    document.getElementById(
+        "toggleSidebarBtn"
+    );
+
+const instructionsCard =
+    document.querySelector(
+        ".instructions-card"
+    );
+
+const toggleInstructionsBtn =
+    document.getElementById(
+        "toggleInstructionsBtn"
+    );
+
+toggleSidebarBtn.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.toggle(
+            "collapsed"
+        );
+    }
+);
+
+toggleInstructionsBtn.addEventListener(
+    "click",
+    () => {
+
+        instructionsCard.classList.toggle(
+            "collapsed"
+        );
+
+    }
+);
+
+/* ======================================================
     SIDEBAR RENDER
    ====================================================== */
 
@@ -918,9 +963,56 @@ document
     removeStitch
 );
 
+function previousSection(){
+
+    const project =
+        getCurrentProject();
+
+    const section =
+        getCurrentSection();
+
+    if(
+        !project ||
+        !section
+    ){
+        return;
+    }
+
+    const index =
+        project.sections.findIndex(
+            s =>
+            s.id === section.id
+        );
+
+    if(
+        index <= 0
+    ){
+        return;
+    }
+
+    currentSectionId =
+        project.sections[
+            index - 1
+        ].id;
+
+    renderProjects();
+
+    loadSelectedSection();
+}
+
 /* ======================================================
     NAVIGATION BUTTONS
    ====================================================== */
+
+document
+.getElementById(
+    "previousSectionBtn"
+)
+
+.addEventListener(
+    "click",
+    previousSection
+);
 
 document
 .getElementById(
@@ -1074,12 +1166,32 @@ document.addEventListener(
             Next Section
         ------------------- */
 
-        if (
+        if(
             event.key ===
             "Enter"
-        ) {
+        ){
 
-            openNextSectionModal();
+            event.preventDefault();
+
+        document
+        .getElementById(
+                "nextSectionBtn"
+        )
+        .click();
+
+        }   
+
+        /* -------------------
+            Previous Section
+        ------------------- */
+        if(
+            event.key ===
+            "Backspace"
+        ){
+
+            event.preventDefault();
+
+            previousSection();
         }
     }
 );
