@@ -554,7 +554,7 @@ button:active{
 .floating-actions{
     position:fixed;
     top:120px;
-    right:20px;
+    right: -20px;
 
     display:flex;
     flex-direction:column;
@@ -587,7 +587,7 @@ button:active{
 
 .instructions-card{
     position:fixed;
-    right:20px;
+    right:30px;
     top:20px;
 
     width:320px;
