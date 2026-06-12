@@ -259,20 +259,26 @@ if (
                 sectionsHTML += `
                     <div class="section-row">
                         
-                        <div 
-                            class="section-item" 
-                            onclick="selectSection('${project.id}','${section.id}')"
-                        >
+                        <div class="section-item"
+                        onclick="selectSection('${project.id}','${section.id}')">
                             ${icon}
                             ${section.name}
                             [${section.current}/${section.target}]
                         </div>
-                    
-                        <button class="rename-section-btn"
-                            onclick="event.stopPropagation();
+
+                        <div class="section-actions-mini">
+                            <button class="rename-section-btn"
+                            onclick="event.stopPropagation(); 
                             renameSection('${section.id}');">
-                            ✏
-                        </button>
+                                ✏
+                            </button>
+
+                            <button class="delete-section-btn"
+                            onclick="event.stopPropagation();
+                            deleteSection('${section.id}');">
+                                🗑
+                            </button>
+                        </div>
                     </div>
                 `;
             });
@@ -498,6 +504,77 @@ function renameSection(
     showModal(
         "renameSectionModal"
     );
+}
+
+function deleteSection(
+    sectionId
+){
+    
+
+    let project = null;
+
+    for(
+        const p of projects
+    ){
+    if(
+        p.sections.some(
+            s => s.id === sectionId
+        )
+    ){
+        project = p;
+        break;
+    }
+}
+
+    const section =
+        project.sections.find(
+            s => s.id === sectionId
+        );
+
+    if(
+        !section
+    ){
+        return;
+    }
+
+    const confirmed =
+        confirm(
+            `Delete "${section.name}"?`
+        );
+
+    if(
+        !confirmed
+    ){
+        return;
+    }
+
+    if(
+        project.sections.length === 1
+    ){
+        alert(
+            "A project must have at least one section."
+        );
+
+        return;
+    }
+
+    project.sections =
+        project.sections.filter(
+            s => s.id !== sectionId
+        );
+
+    if(
+        currentSectionId === sectionId
+    ){
+        currentSectionId =
+            project.sections[0].id;
+    }
+
+    saveApp();
+
+    renderProjects();
+
+    loadSelectedSection();
 }
 
 function selectSection(
@@ -838,31 +915,45 @@ function resetCurrentSection() {
     const section =
         getCurrentSection();
 
-    if (!section) return;
-
-    const confirmReset =
-        confirm(
-            "Reset current section?"
-        );
-
-    if (
-        !confirmReset
-    ) {
-
+    if (!section){
         return;
     }
 
-    section.current = 0;
-
-    section.completed =
-        false;
-
-    saveApp();
-
-    loadSelectedSection();
-
-    renderProjects();
+    showModal(
+        "resetSectionModal"
+    );
 }
+
+console.log(
+    document.getElementById(
+        "confirmResetBtn"
+    )
+);
+
+document
+.getElementById(
+    "confirmResetBtn"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        const section =
+            getCurrentSection();
+
+        section.current = 0;
+
+        saveApp();
+
+        loadSelectedSection();
+
+        renderProjects();
+
+        hideModal(
+            "resetSectionModal"
+        );
+    }
+);
 
 /* ======================================================
     PROGRESS %
@@ -1149,18 +1240,38 @@ document.addEventListener(
         }
 
         /* -------------------
-            Reset Section
-        ------------------- */
+    Reset Section
+------------------- */
 
-        if (
-            event.code ===
-            "Space"
-        ) {
+if (
+    event.code ===
+    "Space"
+) {
 
-            event.preventDefault();
+    event.preventDefault();
 
-            resetCurrentSection();
-        }
+    const resetModal =
+        document.getElementById(
+            "resetSectionModal"
+        );
+
+    if (
+        !resetModal.classList.contains(
+            "hidden"
+        )
+    ) {
+
+        document
+            .getElementById(
+                "confirmResetBtn"
+            )
+            .click();
+
+        return;
+    }
+
+    resetCurrentSection();
+}
 
         /* -------------------
             Next Section

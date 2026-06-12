@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crochet Counter V3.0</title>
+    <title>Crochet Counter V3.1</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -128,18 +128,29 @@
             </div>
 
             <!-- Instructions -->
+            <div class="floating-actions">
+
+                <button id="resetSectionBtn"
+                onclick="resetCurrentSection()"
+                title="Reset Section">
+                    ⟲
+                </button>
+
+                <button id="toggleInstructionsBtn">
+                    📋
+                </button>
+
+            </div>
+
             <div class="instructions-card">
+
                 <div class="instructions-header">
 
                     <h3>
                         Instructions
                     </h3>
 
-                    <button id="toggleInstructionsBtn">
-                        📋
-                    </button>
-
-                    <div class="instruction-actions">
+                <div class="instruction-actions">
                         <button id="editInstructionBtn">
                             ✏ Edit
                         </button>
@@ -169,6 +180,34 @@
             </div>
         </main>
     </div>
+
+    <!-- ======================
+        RESET MODAL
+    ======================= -->
+    <div
+    class="modal hidden"
+    id="resetSectionModal"
+>
+
+    <div class="modal-content">
+
+        <h2>
+            Reset Section
+        </h2>
+
+        <p>
+            Reset current section progress?
+        </p>
+
+        <button
+            id="confirmResetBtn"
+        >
+            Reset
+        </button>
+
+    </div>
+
+</div>
 
     <!-- ======================
         PROJECT MODAL
